@@ -4,6 +4,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Model_User extends CI_Model
 {
     //------------------------------ Dosen ------------------------------
+    public function getAllDosen()
+    {
+        $id_role = 2;
+        $this->db->where('id_role', $id_role);
+        return $this->db->get('tb_user')->result_array();
+    }
     // Dosen MIF
     public function getAllDosenMif()
     {
@@ -62,6 +68,13 @@ class Model_User extends CI_Model
     }
 
     //---------------------------- Mahasiswa ----------------------------
+    // Mahasiswa All
+    public function getAllMahasiswaAll()
+    {
+        $id_role = 3;
+        $this->db->where('id_role', $id_role);
+        return $this->db->get('tb_user')->result_array();
+    }
     // Mahasiswa MIF
     public function getAllMahasiswaMif()
     {

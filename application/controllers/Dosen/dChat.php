@@ -27,16 +27,16 @@ class dChat extends CI_Controller
         $data['user'] = $this->db->get_where('tb_user', ['email' => $this->session->userdata('email')])->row_array();
         $data['role'] = $this->db->get_where('tb_role', ['id_role' => $this->session->userdata('id_role')])->row_array();
         $list = $this->db->get_where('tb_chat', ['id_dosen' => $data['user']['id_user']])->result_array();
-        $arr2 = array_map(function($person) {
+        $arr2 = array_map(function ($person) {
             $detailUser = $this->db->get_where('tb_user', ['id_user' => $person['id_user']])->row_array();
             $fromBy = $detailUser['name'];
             $idChat = $person['id'];
             $detailChat = $this->db->query("SELECT * FROM tb_reply_chat WHERE id_chat = '$idChat' ORDER BY id DESC")->row_array();
             return [
-                    "id" => $person['id'],
-                    "id_user" => $fromBy,
-                    "topic" => $person['topic'],
-                    "update_time" => $detailChat['update_time']
+                "id" => $person['id'],
+                "id_user" => $fromBy,
+                "topic" => $person['topic'],
+                "update_time" => $detailChat['update_time']
             ];
         }, $list);
 
@@ -46,10 +46,10 @@ class dChat extends CI_Controller
         $this->load->view('templates/dosen_sidebar', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('dosen/d_chat', $data);
-        $this->load->view('templates/footer_dosen',$data);
+        $this->load->view('templates/footer_dosen', $data);
     }
 
-    public function sendReply() 
+    public function sendReply()
     {
         $data = [
             'id_chat' => $this->input->post('id_chat'),
@@ -57,11 +57,11 @@ class dChat extends CI_Controller
             'from_by' => $this->input->post('id_user'),
             'message' => $this->input->post('message')
         ];
-        
+
         return $this->db->insert('tb_reply_chat', $data);
     }
 
-    public function show($id) 
+    public function show($id)
     {
         $data['title'] = "Chat Pribadi";
         $data['user'] = $this->db->get_where('tb_user', ['email' => $this->session->userdata('email')])->row_array();
@@ -74,21 +74,20 @@ class dChat extends CI_Controller
         $this->load->view('templates/footer_dosen');
     }
 
-    public function chat_ajax($id) {
+    public function chat_ajax($id)
+    {
         $data = $this->db->get_where('tb_reply_chat', ['id_chat' => $id])->result_array();
-        $arr2 = array_map(function($person) {
+        $arr2 = array_map(function ($person) {
             $idChat = $person['id_chat'];
             $detailUser = $this->db->get_where('tb_user', ['id_user' => $person['from_by']])->row_array();
             $fromBy = $detailUser['name'];
             return [
-                    "id_role" => $person['id_role'],
-                    "from_by" => $fromBy,
-                    "message" => $person['message'],
-                    "update_time" => $person['update_time']
+                "id_role" => $person['id_role'],
+                "from_by" => $fromBy,
+                "message" => $person['message'],
+                "update_time" => $person['update_time']
             ];
         }, $data);
         echo json_encode($arr2);
     }
-    
-
 }

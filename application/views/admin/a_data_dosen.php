@@ -132,7 +132,8 @@
                                     <!-- Detail -->
                                     <a href="" class="badge badge-primary" data-toggle="modal" data-target="#lihatDosen<?= $tb['id_user']; ?>">detail</a> |
                                     <!-- delete -->
-                                    <a href="<?= base_url('Admin/aDataDosen/delete_user/'); ?><?= $tb['id_user']; ?>" class="badge badge-danger" onclick="return confirm('Your data will be delete. Are you sure to continue?');">hapus</a>
+                                    <a href="<?= base_url('Admin/aDataDosen/delete_user/'); ?><?= $tb['id_user']; ?>" class="badge badge-danger" 
+                                    onclick="return confirm('Your data will be delete. Are you sure to continue?');">hapus</a>
 
                                     <!-- Modal Detail -->
                                     <div class="modal fade" id="lihatDosen<?= $tb['id_user']; ?>" tabindex="-1" aria-labelledby="lihatDosenlabel" aria-hidden="true">

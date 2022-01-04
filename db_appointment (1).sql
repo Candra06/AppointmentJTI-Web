@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 29 Des 2020 pada 05.10
--- Versi server: 10.1.40-MariaDB
--- Versi PHP: 7.3.5
+-- Waktu pembuatan: 27 Des 2021 pada 05.34
+-- Versi server: 10.4.22-MariaDB
+-- Versi PHP: 8.0.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -31,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `calendar` (
   `id` int(11) NOT NULL,
   `title` varchar(126) DEFAULT NULL,
-  `description` text,
+  `description` text DEFAULT NULL,
   `color` varchar(24) DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
@@ -51,15 +50,37 @@ CREATE TABLE `events` (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `start_event` datetime NOT NULL,
-  `end_event` datetime NOT NULL
+  `end_event` datetime NOT NULL,
+  `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `events`
 --
 
-INSERT INTO `events` (`id`, `title`, `start_event`, `end_event`) VALUES
-(7, 'Bimbingan TA', '2020-11-19 00:00:00', '2020-11-20 00:00:00');
+INSERT INTO `events` (`id`, `title`, `start_event`, `end_event`, `id_user`) VALUES
+(7, 'libu', '2020-11-19 00:00:00', '2020-11-20 00:00:00', 4),
+(8, 'tester', '2021-09-15 00:00:00', '2021-09-15 00:00:00', 4),
+(9, 'tester', '2021-09-15 00:00:00', '2021-09-15 00:00:00', 4),
+(10, 'tester', '2021-09-15 00:00:00', '2021-09-15 00:00:00', 4),
+(11, 'tester', '2021-09-15 00:00:00', '2021-09-15 00:00:00', 4),
+(12, 'tester', '2021-09-15 00:00:00', '2021-09-15 00:00:00', 4),
+(13, 'tester', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(14, 'tester', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(15, 'tester', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(16, 'tester', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(17, 'tester', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(18, 'tester', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(19, 'tester', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(20, 'tester', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(21, 'tester', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(22, 'tester', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(23, 'tester', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(24, 'tester', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(25, 'testerut7ghgy', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(26, 'testerut7ghgy', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(27, 'testerut7ghgy', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4),
+(28, 'testerut7ghgy', '2021-12-27 00:00:00', '2021-12-27 00:00:00', 4);
 
 -- --------------------------------------------------------
 
@@ -72,7 +93,7 @@ CREATE TABLE `tb_chat` (
   `id_user` int(11) NOT NULL,
   `id_dosen` int(11) NOT NULL,
   `topic` text NOT NULL,
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `update_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -80,12 +101,8 @@ CREATE TABLE `tb_chat` (
 --
 
 INSERT INTO `tb_chat` (`id`, `id_user`, `id_dosen`, `topic`, `update_time`) VALUES
-(2, 19, 4, 'minta ttd', '2020-12-15 12:02:30'),
-(3, 18, 14, 'asdasd', '2020-12-22 12:12:54'),
-(4, 23, 11, 'asdasd', '2020-12-22 12:16:08'),
-(5, 23, 8, 'sasd', '2020-12-22 13:17:51'),
-(6, 5, 4, 'llo', '2020-12-27 12:32:22'),
-(7, 18, 14, 'dasd', '2020-12-27 12:35:20');
+(1, 19, 9, 'Update', '2020-12-03 04:30:37'),
+(2, 5, 4, 'Update', '2020-12-03 04:30:37');
 
 -- --------------------------------------------------------
 
@@ -121,8 +138,26 @@ CREATE TABLE `tb_event` (
   `message` text NOT NULL,
   `start_event` datetime NOT NULL,
   `end_event` datetime NOT NULL,
-  `status` enum('waiting','reject','accept','busy') NOT NULL
+  `status` enum('waiting','reject','accept') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `tb_event`
+--
+
+INSERT INTO `tb_event` (`id`, `id_user`, `id_dosen`, `title`, `message`, `start_event`, `end_event`, `status`) VALUES
+(16, 19, 9, 'test', 'kamu ditolak', '2020-12-03 00:00:00', '2020-12-04 00:00:00', 'reject'),
+(17, 19, 4, 'papa', 'kamu accept', '2020-12-04 00:00:00', '2021-07-08 00:00:00', 'accept'),
+(19, 5, 4, 'tester', 'kamu accept', '2021-12-02 00:00:00', '2021-12-03 00:00:00', 'accept'),
+(20, 4, 1, 'tester', '', '2021-09-15 00:00:00', '2021-09-15 00:00:00', 'waiting'),
+(21, 4, 4, 'tester', 'kamu accept', '2021-09-15 00:00:00', '2021-09-15 00:00:00', 'accept'),
+(22, 5, 4, 'tester', 'kamu accept', '2021-09-15 00:00:00', '2021-09-15 00:00:00', 'accept'),
+(23, 5, 4, 'tester', 'kamu accept', '2021-09-15 00:00:00', '2021-09-15 00:00:00', 'accept'),
+(24, 5, 4, 'tester', 'kamu accept', '2021-12-30 00:00:00', '2021-12-31 00:00:00', 'accept'),
+(25, 5, 4, 'tester', 'kamu accept', '2021-12-30 00:00:00', '2021-12-31 00:00:00', 'accept'),
+(26, 5, 4, '1eqwdaw', 'kamu accept', '2021-12-31 00:00:00', '2021-12-31 00:00:00', 'accept'),
+(27, 5, 4, '1eqwdaw', 'kamu accept', '2021-12-31 00:00:00', '2021-12-31 00:00:00', 'accept'),
+(28, 5, 4, '123123131', 'kamu accept', '2021-12-27 00:00:00', '2021-12-31 00:00:00', 'accept');
 
 -- --------------------------------------------------------
 
@@ -153,35 +188,28 @@ INSERT INTO `tb_prodi` (`id_prodi`, `nama_prodi`) VALUES
 CREATE TABLE `tb_reply_chat` (
   `id` int(11) NOT NULL,
   `id_chat` int(11) NOT NULL,
-  `id_role` int(11) NOT NULL,
   `from_by` varchar(200) NOT NULL,
   `message` text NOT NULL,
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `update_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `tb_reply_chat`
 --
 
-INSERT INTO `tb_reply_chat` (`id`, `id_chat`, `id_role`, `from_by`, `message`, `update_time`) VALUES
-(1, 1, 2, '9', 'halo\r\n', '2020-12-04 06:49:49'),
-(2, 1, 3, '19', 'halo juga', '2020-12-05 11:07:53'),
-(3, 1, 3, '19', 'iya sama sama kakak', '2020-12-05 11:13:14'),
-(4, 1, 3, '19', 'siap bang jago', '2020-12-06 05:43:40'),
-(5, 1, 2, '9', 'halo juga pak', '2020-12-06 06:06:12'),
-(6, 1, 3, '19', 'kamu udah makan belum ?', '2020-12-06 06:06:41'),
-(7, 1, 2, '9', 'udah nih', '2020-12-06 06:06:54'),
-(0, 2, 3, '19', 'haloo\n', '2020-12-15 12:02:40'),
-(0, 3, 3, '5', 'cok\n', '2020-12-17 06:41:30'),
-(0, 3, 2, '4', 'opo cok\n', '2020-12-17 06:41:56'),
-(0, 2, 2, '4', 'haloo\n', '2020-12-20 03:39:10'),
-(0, 2, 2, '4', 'halo', '2020-12-21 03:58:16'),
-(0, 3, 3, '18', 'halo pak\n', '2020-12-22 12:13:03'),
-(0, 4, 3, '23', 'halsodo\n', '2020-12-22 12:16:14'),
-(0, 5, 3, '23', 'jjhj\n', '2020-12-22 13:18:02'),
-(0, 5, 2, '8', 'hkhkl\n', '2020-12-22 13:18:15'),
-(0, 6, 3, '5', 'halo\n', '2020-12-27 12:32:34'),
-(0, 7, 3, '18', 'asdahsdasd\n', '2020-12-27 12:35:41');
+INSERT INTO `tb_reply_chat` (`id`, `id_chat`, `from_by`, `message`, `update_time`) VALUES
+(1, 1, '4', 'halo\r\n', '2021-12-21 06:01:14'),
+(2, 1, '5', 'halo juga', '2021-12-21 06:01:49'),
+(3, 1, '4', 'iya sama sama kakak', '2021-12-21 06:01:23'),
+(4, 1, '5', 'siap bang jago', '2021-12-21 06:01:43'),
+(5, 1, '4', 'halo juga pak', '2021-12-21 06:01:29'),
+(6, 1, '5', 'kamu udah makan belum ?', '2021-12-21 06:01:39'),
+(7, 1, '4', 'udah nih', '2021-12-21 06:01:37'),
+(8, 1, ' 5', ' tester', '2021-12-21 06:01:54'),
+(9, 0, ' 5', ' tester', '2021-12-21 06:24:06'),
+(10, 0, ' 5', ' tester', '2021-12-23 10:44:02'),
+(11, 0, ' 5', ' tester', '2021-12-23 10:44:11'),
+(12, 0, ' 5', ' tester', '2021-12-23 10:55:38');
 
 -- --------------------------------------------------------
 
@@ -258,7 +286,7 @@ INSERT INTO `tb_user` (`id_user`, `name`, `nip/nim`, `email`, `password`, `id_ro
 (14, 'Aji Seto Arifianto, S.ST., M.T.', '19851128 200812 1 002', 'ajiseto@gmail.com', '123456', 2, 2, 'default.png', 1602742596),
 (18, 'M Aldo Rizkaya', 'E31170509', 'aldorizkaya@gmail.com', '123456', 3, 2, 'default.png', 1602747889),
 (19, 'M Badar Pamungkas', 'E31180510', 'badarp@gmail.com', '123456', 3, 1, 'default.png', 1602747938),
-(23, 'M Haris', 'E31160509', 'haris@gmail.com', '123456', 3, 3, 'default.png', 1602748138),
+(23, 'M Haris', 'E31160509', 'haris@gmail.com', '123456', 3, 3, 'f2e3e776a687c841a664aa29984ab6ff.png', 1602748138),
 (25, 'Wiji', '00988812312143', 'wiji@gmail.com', '123456', 2, 2, 'default.png', 1605686221);
 
 --
@@ -302,6 +330,13 @@ ALTER TABLE `tb_prodi`
   ADD PRIMARY KEY (`id_prodi`);
 
 --
+-- Indeks untuk tabel `tb_reply_chat`
+--
+ALTER TABLE `tb_reply_chat`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`,`id_chat`,`from_by`,`update_time`) USING BTREE;
+
+--
 -- Indeks untuk tabel `tb_role`
 --
 ALTER TABLE `tb_role`
@@ -327,19 +362,19 @@ ALTER TABLE `tb_user`
 -- AUTO_INCREMENT untuk tabel `calendar`
 --
 ALTER TABLE `calendar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_chat`
 --
 ALTER TABLE `tb_chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_confirm`
@@ -351,13 +386,19 @@ ALTER TABLE `tb_confirm`
 -- AUTO_INCREMENT untuk tabel `tb_event`
 --
 ALTER TABLE `tb_event`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_prodi`
 --
 ALTER TABLE `tb_prodi`
   MODIFY `id_prodi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT untuk tabel `tb_reply_chat`
+--
+ALTER TABLE `tb_reply_chat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_role`
@@ -369,7 +410,7 @@ ALTER TABLE `tb_role`
 -- AUTO_INCREMENT untuk tabel `tb_status`
 --
 ALTER TABLE `tb_status`
-  MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `tb_user`
