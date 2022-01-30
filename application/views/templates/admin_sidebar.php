@@ -19,7 +19,7 @@
         <li class="nav-item">
         <?php endif; ?>
 
-        <a class="nav-link" href="<?= base_url('Admin/aDashboard'); ?>">
+        <a class="nav-link" href="<?= base_url('Admin/ADashboard'); ?>">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
         </li>
@@ -39,7 +39,7 @@
                 <li class="nav-item">
                 <?php endif; ?>
 
-                <a class="nav-link collapsed" href="<?= base_url('Admin/aDataDosen'); ?>">
+                <a class="nav-link collapsed" href="<?= base_url('Admin/ADataDosen'); ?>">
                     <i class="fas fa-fw fa-user"></i>
                     <span>Data Dosen</span>
                 </a>
@@ -52,7 +52,7 @@
                     <li class="nav-item">
                     <?php endif; ?>
 
-                    <a class="nav-link" href="<?= base_url('Admin/aDataMahasiswa'); ?>">
+                    <a class="nav-link" href="<?= base_url('Admin/ADataMahasiswa'); ?>">
                         <i class="fas fa-fw fa-user-graduate"></i>
                         <span>Data Mahasiswa</span>
                     </a>

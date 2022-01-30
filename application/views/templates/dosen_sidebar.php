@@ -19,7 +19,7 @@
         <li class="nav-item">
         <?php endif; ?>
 
-        <a class="nav-link" href="<?= base_url('Dosen/dDashboard'); ?>">
+        <a class="nav-link" href="<?= base_url('Dosen/DDashboard'); ?>">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
         </li>
@@ -39,7 +39,7 @@
             <li class="nav-item">
             <?php endif; ?>
 
-            <a class="nav-link" href="<?= base_url('Dosen/dJadwal'); ?>">
+            <a class="nav-link" href="<?= base_url('Dosen/DJadwal'); ?>">
                 <i class="fas fa-fw fa-calendar-alt"></i>
                 <span>Jadwal</span>
             </a>
@@ -65,7 +65,7 @@
                     <li class="nav-item">
                     <?php endif; ?>
 
-                    <a class="nav-link" href="<?= base_url('Dosen/dDataMahasiswa'); ?>">
+                    <a class="nav-link" href="<?= base_url('Dosen/DDataMahasiswa'); ?>">
                         <i class="fas fa-fw fa-user-graduate"></i>
                         <span>Data Mahasiswa</span>
                     </a>
@@ -79,7 +79,7 @@
                         <li class="nav-item">
                         <?php endif; ?>
 
-                        <a class="nav-link" href="<?= base_url('Dosen/dRequest'); ?>">
+                        <a class="nav-link" href="<?= base_url('Dosen/DRequest'); ?>">
                             <i class="fas fa-fw fa-handshake"></i>
                             <span>Request</span>
                         </a>

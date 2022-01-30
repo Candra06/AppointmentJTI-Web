@@ -1,0 +1,130 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class DJadwal extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        //Session Login
+        if (!$this->session->userdata('email')) {
+            redirect('Auth/access_blocked');
+        } else {
+            $role = $this->session->userdata('id_role');
+            if ($role != '2') {
+                redirect('Auth/access_blocked');
+            }
+        }
+        $this->load->model('Model_FullCalendar');
+        $this->load->model('Model_User');
+    }
+
+    public function index()
+    {
+        //title
+        $data['title'] = 'Jadwal';
+
+        //ambil data session login
+        $data['user'] = $this->db->get_where('tb_user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['role'] = $this->db->get_where('tb_role', ['id_role' => $this->session->userdata('id_role')])->row_array();
+        $data['id_user_dosen'] = $data['user']['id_user'];
+        $data['mRequest'] = $this->db->get_where('tb_event', ['id_dosen' => $data['user']['id_user']])->result_array();
+
+        // Tampil Dosen
+        $data['mif'] = $this->Model_User->getAllDosenMif();
+        $data['tif'] = $this->Model_User->getAllDosenTif();
+        $data['tkk'] = $this->Model_User->getAllDosenTkk();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/dosen_sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('dosen/d_jadwal', $data);
+        $this->load->view('templates/footer_dosen');
+    }
+
+    function load()
+    {
+        $event_data = $this->Model_FullCalendar->fetch_all_event_by_dosen($this->session->userdata('id_user'));
+        foreach ($event_data->result_array() as $row) {
+            $getInfo = $this->db->get_where('tb_user', ['id_user' => $row['id_user']])->row_array();
+
+            $idEvent = $row['id'];
+            $startEvent = $row['start_event'];
+            $endEvent = $row['end_event'];
+            $content = $row['title'];
+            $user = $getInfo['name'];
+            $status = $row['status'];
+
+            $msg = "$content oleh $user";
+
+            if ($status === "waiting") {
+                $color = "blue";
+            } elseif ($status === "accept") {
+                $color = "green";
+            } elseif ($status === "reject") {
+                $color = "red";
+            } elseif ($status == "busy") {
+                $color = "yellow";
+            }
+
+            $data[] = array(
+                'id' => $idEvent,
+                'title' => $content,
+                'start' => $startEvent,
+                'end' => $endEvent,
+                'user' => $user,
+                'status' => $row['status'],
+                'message' => $row['message'],
+                'color' => $color
+            );
+        }
+        echo json_encode($data);
+    }
+
+    function delete()
+    {
+        if ($this->input->post('id')) {
+            $this->Model_FullCalendar->delete_event($this->input->post('id'));
+        }
+    }
+
+    function update()
+    {
+        if (!$this->input->post('status') || $this->input->post('message')) {
+            $data = array(
+                'status'   => $this->input->post('status'),
+                'message' => $this->input->post('message')
+            );
+            $this->db->where('id', $this->input->post('id'));
+            $this->db->update('tb_event', $data);
+        } else {
+            $data = array(
+                'status'   => $this->input->post('status')
+            );
+            $this->db->where('id', $this->input->post('id'));
+            $this->db->update('tb_event', $data);
+        }
+    }
+
+    function insert()
+    {
+        if ($this->input->post('title')) {
+            $data = array(
+                'title'  => $this->input->post('title'),
+                'start_event' => $this->input->post('start'),
+                'end_event' => $this->input->post('end'),
+                'id_user' => $this->input->post('user'),
+                'id_dosen' => $this->input->post('dosen'),
+                'status' => 'busy'
+            );
+
+            // var_dump($data); die;
+            if ($this->Model_FullCalendar->insert_event($data)) {
+                echo "success";
+            } else {
+                echo "failed";
+                // var_dump($data);
+            }
+        }
+    }
+}
