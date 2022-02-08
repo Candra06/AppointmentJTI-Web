@@ -203,7 +203,7 @@ class Event extends REST_Controller
     }
     public function konfirmasi_pengajuan_post($id){
         $d = $_POST;
-        $q = $this->db->update("tb_event", ['status' => $d['status']], ['id' => $id]);
+        $q = $this->db->update("tb_event", ['status' => $d['status'], 'message' => $d['message']], ['id' => $id]);
         $response = [];
         if($q){
             $response = [
