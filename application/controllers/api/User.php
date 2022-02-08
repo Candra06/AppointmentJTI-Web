@@ -111,7 +111,7 @@ class User extends REST_Controller
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
         
 	}
-    public function save_post($id)
+    public function save_post()
 	{
         $d = $_POST;
         $data = [
@@ -126,7 +126,7 @@ class User extends REST_Controller
         if(count($cek) > 0){
             $response = [
                 'status' => false,
-                'message' => "Data Berhasil disimpan"
+                'message' => "Data Gagal disimpan"
             ];
         }else{
             $q = $this->db->update($this->table, $data, ['id_user' => $id]);
