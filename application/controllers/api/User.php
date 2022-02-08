@@ -19,10 +19,10 @@ class User extends REST_Controller
         $this->table = 'tb_user';
     }
 
-    public function index_post()
+    public function index_get($id_user)
     {
         // $email = $this->post('email');
-        $id_user = $this->post('id_user');
+        // $id_user = $this->post('id_user');
         
         $user = $this->db->get_where('tb_user', ['id_user' => $id_user])->row_array();
         if ($user['id_role'] ===  '2') {
@@ -65,7 +65,7 @@ class User extends REST_Controller
         }
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
     }
-    public function delete_delete($id)
+    public function delete_get($id)
 	{
             $data = $this->db->delete($this->table, ['id_user' => $id]);
             $response = [];
@@ -144,6 +144,5 @@ class User extends REST_Controller
             }
         }
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
-        
 	}
 }

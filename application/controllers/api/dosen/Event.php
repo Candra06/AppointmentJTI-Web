@@ -98,7 +98,7 @@ class Event extends REST_Controller
         }
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
 	}
-    public function delete_pengajuan_delete($id)
+    public function delete_pengajuan_get($id)
 	{
             $data = $this->db->delete("tb_event", ['id' => $id]);
             $response = [];
@@ -117,7 +117,7 @@ class Event extends REST_Controller
             $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
         
 	}
-    public function delete_delete($id)
+    public function delete_get($id)
 	{
             $data = $this->db->delete("events", ['id' => $id]);
             $response = [];
@@ -159,34 +159,12 @@ class Event extends REST_Controller
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
         
 	}
-    public function save_post()
-	{
-        $d = $_POST;
-        $nama_Event = $d['nama_Event'];
-        $data = [
-            'nama_Event' => $nama_Event
-        ];
-        $q = $this->db->insert($this->table, $data,);
-        $response = [];
-        if($q){
-            $response = [
-                'status' => true,
-                'message' => "Data Berhasil disimpan"
-            ];
-        }else{
-            $response = [
-                'status' => false,
-                'message' => "Data Gagal disimpan"
-            ];
-        }
-        $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
-        
-	}
 
 
-    public function save_pengajuan_get($id){
+
+    public function save_post($id){
         $d = $_POST;
-        $q = $this->db->insert("tb_event", ['title' => $d['title'], 'message' => $d['message'], 'status' => 'waiting']);
+        $q = $this->db->insert("events", ['title' => $d['title'], 'start_event' => $d['start_event'], 'end_event' => $d['end_event'], 'id_user' => $id]);
         $response = [];
         if($q){
             $response = [

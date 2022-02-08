@@ -10,18 +10,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
 require APPPATH . '/libraries/Format.php';
 
-class Prodi extends REST_Controller
+class Event extends REST_Controller
 {
     
 	public function __construct()
 	{
 		parent::__construct();
-        $this->table = 'tb_prodi';
+        $this->table = 'events';
 	}
-
-	public function index_get()
+    public function index_get()
 	{
-		$data = $this->db->get($this->table)->result_array();
+		$data = $this->db->query("SELECT * FROM $this->table e JOIN tb_user tu ON e.id_user=tu.id_user ")->result_array();
         $response = [];
         if(count($data) > 0){
             $response = [
@@ -38,11 +37,11 @@ class Prodi extends REST_Controller
         }
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
 	}
-    public function detail_get($id)
+    public function pengajuan_get($id)
 	{
-		$data = $this->db->get_where($this->table, ['id_prodi' => $id])->row_array();
+		$data = $this->db->query("SELECT * FROM tb_event e JOIN tb_user tu ON e.id_user=tu.id_user where e.id_user=$id")->result_array();
         $response = [];
-        if($data){
+        if(count($data) > 0){
             $response = [
                 'status' => true,
                 'data' => $data,
@@ -57,56 +56,34 @@ class Prodi extends REST_Controller
         }
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
 	}
-    public function delete_get($id)
+    public function detail_pengajuan_get($id)
 	{
-            $data = $this->db->delete($this->table, ['id_prodi' => $id]);
-            $response = [];
-            if($data){
-                $response = [
-                    'status' => true,
-                    'message' => "Data Berhasil dihapus"
-                ];
-            }else{
-                $response = [
-                    'status' => false,
-                    'data' => $data,
-                    'message' => "Data Gagal dihapus"
-                ];
-            }
-            $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
-        
-	}
-    public function update_post($id)
-	{
-        $d = $_POST;
-        $nama_prodi = $d['nama_prodi'];
-        $data = [
-            'nama_prodi' => $nama_prodi
-        ];
-        $q = $this->db->update($this->table, $data, ['id_prodi' => $id]);
+		$data = $this->db->query("SELECT * FROM tb_event e JOIN tb_user tu ON e.id_user=tu.id_user where e.id=$id")->row_array();
         $response = [];
-        if($q){
+        if(count($data) > 0){
             $response = [
                 'status' => true,
-                'message' => "Data Berhasil diupdate"
+                'data' => $data,
+                'message' => "Data Berhasil diunduh"
             ];
         }else{
             $response = [
                 'status' => false,
-                'message' => "Data Gagal diupdate"
+                'data' => $data,
+                'message' => "Data Kosong"
             ];
         }
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
-        
 	}
-    public function save_post()
-	{
+    public function save_pengajuan_post(){
         $d = $_POST;
-        $nama_prodi = $d['nama_prodi'];
-        $data = [
-            'nama_prodi' => $nama_prodi
-        ];
-        $q = $this->db->insert($this->table, $data,);
+        $q = $this->db->insert("tb_event", 
+        [
+            'title' => $d['title'], 'message' => $d['message'], 'status' => 'waiting',
+            'start_event' => $d['start_event'],'end_event' => $d['end_event'],
+            'id_dosen' => $d['id_dosen'],'id_user' => $d['id_user'],
+
+    ]);
         $response = [];
         if($q){
             $response = [
@@ -120,6 +97,5 @@ class Prodi extends REST_Controller
             ];
         }
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
-        
-	}
+    }
 }
