@@ -25,11 +25,11 @@ class User extends REST_Controller
         // $id_user = $this->post('id_user');
         
         $user = $this->db->get_where('tb_user', ['id_user' => $id_user])->row_array();
-        if ($user['id_role'] ===  '2') {
+        if ($id_user ===  '2') {
             $data = $this->Model_User->getAllMahasiswaAll();
-        } elseif ($user['id_role'] ===  '3') {
+        } elseif ($id_user ===  '3') {
             $data = $this->Model_User->getAllDosen();
-        } elseif ($user['id_role'] ===  '1') {
+        } elseif ($id_user ===  '1') {
             $data = $this->db->get('tb_user')->result_array();
         } 
 	if ($data) {
