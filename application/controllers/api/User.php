@@ -95,7 +95,7 @@ class User extends REST_Controller
             'id_prodi' => $d['id_prodi'],
             // 'image' => $d['image'],
         ];
-        $q = $this->db->update($this->table, $data, ['id_prodi' => $id]);
+        $q = $this->db->update($this->table, $data, ['id_user' => $id]);
         $response = [];
         if($q){
             $response = [
@@ -107,6 +107,41 @@ class User extends REST_Controller
                 'status' => false,
                 'message' => "Data Gagal diupdate"
             ];
+        }
+        $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
+        
+	}
+    public function save_post($id)
+	{
+        $d = $_POST;
+        $data = [
+            'name' => $d['name'],
+            'nip/nim' => $d['no_induk'],
+            'email' => $d['email'],
+            'password' => $d['password'],
+            'id_role' => $d['id_role'],
+            'id_prodi' => $d['id_prodi'],
+        ];
+        $cek = $this->db->get_where($this->table, ['email' => $d['email']])->result_array();
+        if(count($cek) > 0){
+            $response = [
+                'status' => false,
+                'message' => "Data Berhasil disimpan"
+            ];
+        }else{
+            $q = $this->db->update($this->table, $data, ['id_user' => $id]);
+            $response = [];
+            if($q){
+                $response = [
+                    'status' => true,
+                    'message' => "Data Berhasil disimpan"
+                ];
+            }else{
+                $response = [
+                    'status' => false,
+                    'message' => "Data Gagal disimpan"
+                ];
+            }
         }
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
         
