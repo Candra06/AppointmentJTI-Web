@@ -19,17 +19,17 @@ class User extends REST_Controller
         $this->table = 'tb_user';
     }
 
-    public function index_get($id_user)
+    public function index_get($id_role)
     {
         // $email = $this->post('email');
         // $id_user = $this->post('id_user');
         
-        $user = $this->db->get_where('tb_user', ['id_user' => $id_user])->row_array();
-        if ($user['id_role'] ===  '2') {
+        // $user = $this->db->get_where('tb_user', ['id_user' => $id_user])->row_array();
+        if ($id_role ===  '2') {
             $data = $this->Model_User->getAllMahasiswaAll();
-        } elseif ($user['id_role'] ===  '3') {
+        } elseif ($id_role ===  '3') {
             $data = $this->Model_User->getAllDosen();
-        } elseif ($user['id_role'] ===  '1') {
+        } elseif ($id_role===  '1') {
             $data = $this->db->get('tb_user')->result_array();
         } 
 	if ($data) {
