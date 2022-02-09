@@ -129,7 +129,7 @@ class User extends REST_Controller
                 'message' => "Email sudah terpakai"
             ];
         }else{
-            $q = $this->db->update($this->table, $data, ['id_user' => $id]);
+            $q = $this->db->insert($this->table, $data);
             $response = [];
             if($q){
                 $response = [
