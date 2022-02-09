@@ -117,9 +117,9 @@ class Event extends REST_Controller
             $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
         
 	}
-    public function batal_get($id)
+    public function batal_post($id)
 	{
-            $data = $this->db->update("tb_event", ['status' => 'batal'], ['id' => $id]);
+            $data = $this->db->update("tb_event", ['status' => 'batal', 'message' => $_POST['message']], ['id' => $id]);
             $response = [];
             if($data){
                 $response = [
