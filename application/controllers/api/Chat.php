@@ -17,9 +17,9 @@ class Chat extends REST_Controller
 		parent::__construct();
 	}
 
-	public function index_post()
+	public function index_get($id)
 	{
-		$id = $this->post('id');
+		// $id = $this->post('id');
 
 		if ($id) {
 			$data = $this->db
@@ -45,7 +45,31 @@ class Chat extends REST_Controller
 				\Restserver\Libraries\REST_Controller::HTTP_NOT_FOUND
 			);
 	}
-	public function rechat_post()
+	public function save_post()
+	{
+        $d = $_POST;
+        $data = [
+            'id_user' => $d['id_user'],
+			'id_dosen' => $d['id_dosen'],
+			'topic' => $d['topic'],
+        ];
+        $q = $this->db->insert('tb_chat', $data,);
+        $response = [];
+        if($q){
+            $response = [
+                'status' => true,
+                'message' => "Data Berhasil disimpan"
+            ];
+        }else{
+            $response = [
+                'status' => false,
+                'message' => "Data Gagal disimpan"
+            ];
+        }
+        $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
+        
+	}
+	public function detail_chat_post()
 	{
 		$id = $this->post('id');
 
@@ -79,7 +103,7 @@ class Chat extends REST_Controller
 	public function send_post()
 	{
 		$data = [
-			'id' => $this->post('id_chat'),
+			'id_chat' => $this->post('id_chat'),
 			'from_by' => $this->post('id_user'),
 			'message' => $this->post('message'),
 		];

@@ -91,9 +91,7 @@ class User extends REST_Controller
             'nip/nim' => $d['no_induk'],
             'email' => $d['email'],
             'password' => $d['password'],
-            'id_role' => $d['id_role'],
             'id_prodi' => $d['id_prodi'],
-            // 'image' => $d['image'],
         ];
         $q = $this->db->update($this->table, $data, ['id_user' => $id]);
         $response = [];
