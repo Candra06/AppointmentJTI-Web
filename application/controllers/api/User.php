@@ -126,7 +126,7 @@ class User extends REST_Controller
         if(count($cek) > 0){
             $response = [
                 'status' => false,
-                'message' => "Data Berhasil disimpan"
+                'message' => "Email sudah terpakai"
             ];
         }else{
             $q = $this->db->update($this->table, $data, ['id_user' => $id]);
