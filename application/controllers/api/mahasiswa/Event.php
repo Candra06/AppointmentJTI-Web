@@ -58,9 +58,9 @@ class Event extends REST_Controller
 	}
     public function detail_pengajuan_get($id)
 	{
-		$data = $this->db->query("SELECT * FROM tb_event e JOIN tb_user tu ON e.id_user=tu.id_user where e.id=$id")->row_array();
+		$data = $this->db->query("SELECT * FROM tb_event e JOIN tb_user tu ON e.id_user=tu.id_user where e.id=$id AND tu.id_role=3")->row_array();
         $response = [];
-        if(count($data) > 0){
+        if($data){
             $response = [
                 'status' => true,
                 'data' => $data,
