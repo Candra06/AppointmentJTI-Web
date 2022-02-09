@@ -77,26 +77,48 @@ class Event extends REST_Controller
 	}
     public function save_pengajuan_post(){
         $d = $_POST;
-        $q = $this->db->insert("tb_event", 
-        [
-            'title' => $d['title'], 'message' => $d['message'], 'status' => 'waiting',
-            'start_event' => $d['start_event'],'end_event' => $d['end_event'],
-            'id_dosen' => $d['id_dosen'],'id_user' => $d['id_user'],
-
-    ]);
-        $response = [];
-        if($q){
-            $response = [
-                'status' => true,
-                'message' => "Data Berhasil disimpan"
-            ];
-        }else{
+        $start_event = $d['start_event'];
+        $end_event   = $d['end_event'];
+        $cek = $this->db->query("SELECT * FROM tb_event where  ( '$start_event' < end_event AND '$end_event' > start_event ) ")->result_array();
+        if(count($cek) > 0){
             $response = [
                 'status' => false,
-                'message' => "Data Gagal disimpan"
+                'message' => "tanggal sudah terdaftar"
             ];
+        }else{
+            $q = $this->db->insert("tb_event", 
+            [
+                'title' => $d['title'], 'message' => $d['message'], 'status' => 'waiting',
+                'start_event' => $d['start_event'],'end_event' => $d['end_event'],
+                'id_dosen' => $d['id_dosen'],'id_user' => $d['id_user'],
+
+            ]);
+            $response = [];
+            if($q){
+                $response = [
+                    'status' => true,
+                    'message' => "Data Berhasil disimpan"
+                ];
+            }else{
+                $response = [
+                    'status' => false,
+                    'message' => "Data Gagal disimpan"
+                ];
+            }
         }
+        // print_r($cek);
+        
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
+    }
+    public function check_in_range($start_date, $end_date, $date_from_user)
+    {
+    // Convert to timestamp
+    $start_ts = strtotime($start_date);
+    $end_ts = strtotime($end_date);
+    $user_ts = strtotime($date_from_user);
+
+    // Check that user date is between start & end
+    return (($user_ts >= $start_ts) && ($user_ts <= $end_ts));
     }
     public function delete_get($id)
 	{
@@ -117,9 +139,9 @@ class Event extends REST_Controller
             $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
         
 	}
-    public function batal_post($id)
+    public function batal_get($id)
 	{
-            $data = $this->db->update("tb_event", ['status' => 'batal', 'message' => $_POST['message']], ['id' => $id]);
+            $data = $this->db->update("tb_event", ['status' => 'batal'], ['id' => $id]);
             $response = [];
             if($data){
                 $response = [
