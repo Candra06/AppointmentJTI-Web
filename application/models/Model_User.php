@@ -7,7 +7,7 @@ class Model_User extends CI_Model
     public function getAllDosen()
     {
         $id_role = 2;
-        $this->db->where('id_role', $id_role);
+        $this->db->where('id_role', $id_role)->join("tb_prodi", 'tb_user.id_prodi=tb_prodi.id_prodi');
         return $this->db->get('tb_user')->result_array();
     }
     // Dosen MIF

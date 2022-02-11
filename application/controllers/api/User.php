@@ -30,7 +30,7 @@ class User extends REST_Controller
         } elseif ($id_role ===  '3') {
             $data = $this->Model_User->getAllDosen();
         } elseif ($id_role===  '1') {
-            $data = $this->db->get('tb_user')->result_array();
+            $data = $this->db->join("tb_prodi", 'tb_user.id_prodi=tb_prodi.id_prodi')->get('tb_user')->result_array();
         } 
 	if ($data) {
                 $this->response([
