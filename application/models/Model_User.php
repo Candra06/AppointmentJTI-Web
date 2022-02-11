@@ -72,7 +72,8 @@ class Model_User extends CI_Model
     public function getAllMahasiswaAll()
     {
         $id_role = 3;
-        $this->db->where('id_role', $id_role);
+        // $this->db->select("tb_user.*, tb_prodi.nama_prodi");
+        $this->db->where('id_role', $id_role)->join("tb_prodi", 'tb_user.id_prodi=tb_prodi.id_prodi');
         return $this->db->get('tb_user')->result_array();
     }
     // Mahasiswa MIF

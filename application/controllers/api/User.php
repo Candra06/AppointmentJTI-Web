@@ -109,7 +109,7 @@ class User extends REST_Controller
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
         
 	}
-    public function save_post($id)
+    public function save_post()
 	{
         $d = $_POST;
         $data = [
