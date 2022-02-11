@@ -48,7 +48,7 @@ class User extends REST_Controller
         }
     }
     public function detail_get($id){
-        $data = $this->db->get_where($this->table, ['id_user' => $id])->row_array();
+        $data = $this->db->join("tb_prodi", 'tb_user.id_prodi=tb_prodi.id_prodi')->get_where($this->table, ['id_user' => $id])->row_array();
         $response = [];
         if($data){
             $response = [
