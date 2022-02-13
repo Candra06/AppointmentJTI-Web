@@ -20,16 +20,19 @@ class Chat extends REST_Controller
 	public function index_get($id)
 	{
 		// $id = $this->post('id');
-
+		$user = $this->db->get_where('tb_user', ['id_user' => $id])->row_array();
 		if ($id) {
 			$data = $this->db
 				->select('tb_chat.id,tb_chat.id_user,tb_user.name,tb_chat.topic,tb_chat.update_time')
-				->from('tb_chat')
-				->join('tb_user', 'tb_user.id_user = tb_chat.id_user')
-				->where('tb_chat.id_user',$id)
-				->or_where('tb_chat.id_dosen',$id)
-				->get()
-				->result_array();
+				->from('tb_chat');
+				if($user['id_role'] == '2'){
+					$data->join('tb_user', 'tb_user.id_user = tb_chat.id_user')->where('tb_chat.id_user',$id);
+				}else{
+					$data->join('tb_user', 'tb_user.id_user = tb_chat.id_dosen')->where('tb_chat.id_dosen',$id);
+				}
+			$data = $data->get()->result_array();
+				// ->get()
+				// ->result_array();
 			$this->response(
 				[
 					'status' => true,
