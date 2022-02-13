@@ -26,6 +26,8 @@ class Chat extends REST_Controller
 				->select('tb_chat.id,tb_chat.id_user,tb_user.name,tb_chat.topic,tb_chat.update_time')
 				->from('tb_chat')
 				->join('tb_user', 'tb_user.id_user = tb_chat.id_user')
+				->where('tb_chat.id_user',$id)
+				->or_where('tb_chat.id_dosen',$id)
 				->get()
 				->result_array();
 			$this->response(
@@ -72,12 +74,13 @@ class Chat extends REST_Controller
 	public function detail_chat_post()
 	{
 		$id = $this->post('id');
+		// $id_user = $this->post('id_user');
 
 		if ($id) {
 			$data = $this->db
-				->where(
-					"id_chat",
-					$id
+				->where([
+					"id_chat" => $id,
+				]
 				)
 				->get('tb_reply_chat')
 				->result_array();
