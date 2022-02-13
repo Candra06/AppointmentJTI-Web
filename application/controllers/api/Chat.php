@@ -26,9 +26,9 @@ class Chat extends REST_Controller
 				->select('tb_chat.id,tb_chat.id_user,tb_user.name,tb_chat.topic,tb_chat.update_time')
 				->from('tb_chat');
 				if($user['id_role'] == '2'){
-					$data->join('tb_user', 'tb_user.id_user = tb_chat.id_user')->where('tb_chat.id_user',$id);
+					$data->join('tb_user', 'tb_user.id_user = tb_chat.id_user')->where('tb_chat.id_dosen',$id);
 				}else{
-					$data->join('tb_user', 'tb_user.id_user = tb_chat.id_dosen')->where('tb_chat.id_dosen',$id);
+					$data->join('tb_user', 'tb_user.id_user = tb_chat.id_dosen')->where('tb_chat.id_user',$id);
 				}
 			$data = $data->get()->result_array();
 				// ->get()
