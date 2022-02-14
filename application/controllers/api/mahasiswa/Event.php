@@ -80,12 +80,12 @@ class Event extends REST_Controller
         $start_event = $d['start_event'];
         $end_event   = $d['end_event'];
         $cek = $this->db->query("SELECT * FROM tb_event where  ( '$start_event' < end_event AND '$end_event' > start_event ) ")->result_array();
-        if(count($cek) > 0){
-            $response = [
-                'status' => false,
-                'message' => "tanggal sudah terdaftar"
-            ];
-        }else{
+        // if(count($cek) > 0){
+        //     $response = [
+        //         'status' => false,
+        //         'message' => "tanggal sudah terdaftar"
+        //     ];
+        // }else{
             $q = $this->db->insert("tb_event", 
             [
                 'title' => $d['title'], 'message' => $d['message'], 'status' => 'waiting',
@@ -105,7 +105,7 @@ class Event extends REST_Controller
                     'message' => "Data Gagal disimpan"
                 ];
             }
-        }
+        // }
         // print_r($cek);
         
         $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
