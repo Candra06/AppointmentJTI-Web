@@ -40,8 +40,8 @@ class Event extends REST_Controller
 	}
     public function pengajuan_get($id)
 	{
-		$data = $this->db->query("SELECT * FROM tb_event e 
-        JOIN tb_user tu ON e.id_user=tu.id_user where e.id_dosen='$id' ")->result_array();
+		$data = $this->db->query("SELECT e.*, tu.name FROM tb_event e 
+        JOIN tb_user tu ON e.id_user=tu.id_user where e.id_dosen='$id' and tu.id_role=3")->result_array();
         $response = [];
         if(count($data) > 0){
             $response = [
@@ -60,8 +60,8 @@ class Event extends REST_Controller
 	}
     public function detail_data_get($id)
 	{
-		$data = $this->db->query("SELECT * FROM events e 
-        JOIN tb_user tu ON e.id_user=tu.id_user where e.id='$id'")->row_array();
+		$data = $this->db->query("SELECT * FROM tb_event e 
+        JOIN tb_user tu ON e.id_user=tu.id_user where e.id='$id' and tu.id_role=3")->row_array();
         $response = [];
         if($data){
             $response = [

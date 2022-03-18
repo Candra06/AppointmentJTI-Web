@@ -17,17 +17,22 @@ class Chat extends REST_Controller
 		parent::__construct();
 	}
 
-	public function index_post()
+	public function index_get($id)
 	{
-		$id = $this->post('id');
-
+		// $id = $this->post('id');
+		$user = $this->db->get_where('tb_user', ['id_user' => $id])->row_array();
 		if ($id) {
 			$data = $this->db
 				->select('tb_chat.id,tb_chat.id_user,tb_user.name,tb_chat.topic,tb_chat.update_time')
-				->from('tb_chat')
-				->join('tb_user', 'tb_user.id_user = tb_chat.id_user')
-				->get()
-				->result_array();
+				->from('tb_chat');
+				if($user['id_role'] == '2'){
+					$data->join('tb_user', 'tb_user.id_user = tb_chat.id_user')->where('tb_chat.id_dosen',$id);
+				}else{
+					$data->join('tb_user', 'tb_user.id_user = tb_chat.id_dosen')->where('tb_chat.id_user',$id);
+				}
+			$data = $data->get()->result_array();
+				// ->get()
+				// ->result_array();
 			$this->response(
 				[
 					'status' => true,
@@ -45,15 +50,40 @@ class Chat extends REST_Controller
 				\Restserver\Libraries\REST_Controller::HTTP_NOT_FOUND
 			);
 	}
-	public function rechat_post()
+	public function save_post()
+	{
+        $d = $_POST;
+        $data = [
+            'id_user' => $d['id_user'],
+			'id_dosen' => $d['id_dosen'],
+			'topic' => $d['topic'],
+        ];
+        $q = $this->db->insert('tb_chat', $data,);
+        $response = [];
+        if($q){
+            $response = [
+                'status' => true,
+                'message' => "Data Berhasil disimpan"
+            ];
+        }else{
+            $response = [
+                'status' => false,
+                'message' => "Data Gagal disimpan"
+            ];
+        }
+        $this->response($response, \Restserver\Libraries\REST_Controller::HTTP_OK);
+        
+	}
+	public function detail_chat_post()
 	{
 		$id = $this->post('id');
+		// $id_user = $this->post('id_user');
 
 		if ($id) {
 			$data = $this->db
-				->where(
-					"id_chat",
-					$id
+				->where([
+					"id_chat" => $id,
+				]
 				)
 				->get('tb_reply_chat')
 				->result_array();
@@ -79,7 +109,7 @@ class Chat extends REST_Controller
 	public function send_post()
 	{
 		$data = [
-			'id' => $this->post('id_chat'),
+			'id_chat' => $this->post('id_chat'),
 			'from_by' => $this->post('id_user'),
 			'message' => $this->post('message'),
 		];
