@@ -27,6 +27,11 @@ class Auth extends CI_Controller
         }
     }
 
+	public function privacy()
+	{
+		$this->load->view('welcome_message');
+	}
+
     private function _login()
     {
         $email = $this->input->post('email');

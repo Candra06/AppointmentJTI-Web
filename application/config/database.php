@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => 'Ludfyrahman123',
-	'database' => 'db_appoinment',
+	'hostname' => 'ftp.ta-mifpolije.com',
+	'username' => 'u1677917_E31180539',
+	'password' => 'MIF_E31180539',
+	'database' => 'u1677917_E31180539',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
